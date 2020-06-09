@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.crud.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.atguigu.crud.bean.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="createdate" jdbcType="DATE" property="createdate" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="roadpay" jdbcType="INTEGER" property="roadpay" />
+    <result column="prepay" jdbcType="INTEGER" property="prepay" />
+    <result column="transpay" jdbcType="INTEGER" property="transpay" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+  </resultMap>
+  <sql id="example_where">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_example_where">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, createdate, address, roadpay, prepay, creator,transpay,vendor
+  </sql>
+  <select id="selectByExample" parameterType="com.atguigu.crud.bean.OrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from c_order
+    <if test="_parameter != null">
+      <include refid="example_where" />
+    </if>
+      order by id desc
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from c_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByExample" parameterType="com.atguigu.crud.bean.OrderExample">
+    delete from c_order
+    <if test="_parameter != null">
+      <include refid="example_where" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atguigu.crud.bean.Order">
+    insert into c_order (id, createdate, address, 
+      roadpay, prepay, creator,transpay,vendor
+      )
+    values (#{id,jdbcType=INTEGER}, #{createdate,jdbcType=DATE}, #{address,jdbcType=VARCHAR}, 
+      #{roadpay,jdbcType=INTEGER}, #{prepay,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR},
+       #{transpay,jdbcType=INTEGER},
+        #{vendor,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atguigu.crud.bean.Order">
+    insert into c_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="roadpay != null">
+        roadpay,
+      </if>
+      <if test="prepay != null">
+        prepay,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="transpay != null">
+        transpay,
+      </if>
+      <if test="vendor != null">
+        vendor,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=DATE},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="roadpay != null">
+        #{roadpay,jdbcType=INTEGER},
+      </if>
+      <if test="prepay != null">
+        #{prepay,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="transpay != null">
+        #{transpay,jdbcType=INTEGER},
+      </if>
+      <if test="vendor != null">
+        #{vendor,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atguigu.crud.bean.OrderExample" resultType="java.lang.Long">
+    select count(*) from c_order
+    <if test="_parameter != null">
+      <include refid="example_where" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update c_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdate != null">
+        createdate = #{record.createdate,jdbcType=DATE},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roadpay != null">
+        roadpay = #{record.roadpay,jdbcType=INTEGER},
+      </if>
+      <if test="record.prepay != null">
+        prepay = #{record.prepay,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transpay != null">
+        prepay = #{record.transpay,jdbcType=INTEGER},
+      </if>
+      <if test="record.vendor != null">
+        creator = #{record.vendor,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_example_where" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update c_order
+    set id = #{record.id,jdbcType=INTEGER},
+      createdate = #{record.createdate,jdbcType=DATE},
+      address = #{record.address,jdbcType=VARCHAR},
+      roadpay = #{record.roadpay,jdbcType=INTEGER},
+      prepay = #{record.prepay,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      transpay = #{record.transpay,jdbcType=INTEGER},
+      vendor = #{record.vendor,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_example_where" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atguigu.crud.bean.Order">
+    update c_order
+    <set>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=DATE},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="roadpay != null">
+        roadpay = #{roadpay,jdbcType=INTEGER},
+      </if>
+      <if test="prepay != null">
+        prepay = #{prepay,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="transpay != null">
+        transpay = #{transpay,jdbcType=INTEGER},
+      </if>
+      <if test="vendor != null">
+        vendor = #{vendor,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.atguigu.crud.bean.Order">
+    update c_order
+    set createdate = #{createdate,jdbcType=DATE},
+      address = #{address,jdbcType=VARCHAR},
+      roadpay = #{roadpay,jdbcType=INTEGER},
+      prepay = #{prepay,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      transpay = #{transpay,jdbcType=INTEGER},
+      vendor = #{vendor,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查询全部-->
+  <select id="findAll" parameterType="com.atguigu.crud.bean.OrderExample" resultMap="BaseResultMap">
+		select id, createdate, address, roadpay, prepay, creator,transpay,vendor from c_order c order by c.id desc
+  </select>
+  <!--插入一条数据-->
+  <insert id="insertOrder" parameterType="com.atguigu.crud.bean.Order">
+  	insert into c_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="roadpay != null">
+        roadpay,
+      </if>
+      <if test="prepay != null">
+        prepay,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="transpay != null">
+        transpay,
+      </if>
+      <if test="vendor != null">
+        vendor,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=DATE},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="roadpay != null">
+        #{roadpay,jdbcType=INTEGER},
+      </if>
+      <if test="prepay != null">
+        #{prepay,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="transpay != null">
+        #{transpay,jdbcType=INTEGER},
+      </if>
+      <if test="vendor != null">
+        #{vendor,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert> 
+  
+   <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from c_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+<select id="findByExample"  resultMap="BaseResultMap">
+select
+<include refid="Base_Column_List" />
+from c_order
+<where>
+	<if test="creator != null and creator !=''">
+	and creator = 	#{creator}
+	</if>
+	<if test="dateGt != null and dateLt != null">
+		<![CDATA[and DATE_FORMAT(createdate,'%Y-%m-%d') >= DATE_FORMAT(#{dateGt},'%Y-%m-%d')]]>
+	</if>
+	<if test="dateGt != null and dateLt == null">
+		<![CDATA[and DATE_FORMAT(createdate,'%Y-%m-%d') = DATE_FORMAT(#{dateGt},'%Y-%m-%d')]]>
+	</if>
+	<if test="dateLt != null">
+		<![CDATA[and DATE_FORMAT(createdate,'%Y-%m-%d') <= DATE_FORMAT(#{dateLt},'%Y-%m-%d')]]>
+	</if>
+	<if test="vendor != null and vendor !=''">
+		<![CDATA[and vendor like concat(concat('%',#{vendor}),'%')]]>
+	</if>
+</where>
+	order by createdate desc, id desc
+</select>
+
+<select id="findMaxId" resultType="java.util.Map">
+	select max(id) id from c_order
+</select> 
+
+</mapper>
